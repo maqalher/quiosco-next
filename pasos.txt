@@ -1,0 +1,190 @@
+ npx create-next-app@latest
+Need to install the following packages:
+  create-next-app@15.3.3
+Ok to proceed? (y) y
+√ What is your project named? ... quiosco-next
+√ Would you like to use TypeScript? ... No / Yes
+√ Would you like to use ESLint? ... No / Yes
+√ Would you like to use Tailwind CSS? ... No / Yes
+√ Would you like your code inside a `src/` directory? ... No / Yes
+√ Would you like to use App Router? (recommended) ... No / Yes
+√ Would you like to use Turbopack for `next dev`? ... No / Yes
+√ Would you like to customize the import alias (`@/*` by default)? ... No / Yes
+Creating a new Next.js app in C:\Users\thinkpad\Desktop\React\React JP\quiosco-n
+ext.
+
+Using npm.
+
+Initializing project with template: app-tw
+
+
+Installing dependencies:
+- react
+- react-dom
+- next
+
+Installing devDependencies:
+- typescript
+- @types/node
+- @types/react
+- @types/react-dom
+- @tailwindcss/postcss
+- tailwindcss
+- eslint
+- eslint-config-next
+- @eslint/eslintrc
+
+
+added 339 packages, and audited 340 packages in 2m
+
+136 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+Initialized a git repository.
+
+Success! Created quiosco-next at C:\Users\thinkpad\Desktop\React\React JP\quiosc
+o-next
+
+
+npm run dev
+
+Convenciones de Archivos (js, jsx, tsx)
+
+layout => Diseño global que comparte una URL o sus segmentos hijos
+page => Diseño unico para una URL
+loading => Componente que se muestra mientras carga una pagin con suspense
+not-found => Componente que muestra mientras un recurso no es encontrado - 404
+error => Componente que se muestra cuando hay errores inseperados
+route => Componente para Endpoint de REST API
+
+
+layout
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+    return (
+
+    )
+}
+
+Prisma
+npm i @prisma/client
+npm i -D prisma
+iniciar => npx prisma init  => crea prisma/schema.prisma
+
+generar bd en https://dashboard.render.com/new/database
+
+migracion prisma
+npx prisma migrate dev -> categories migration => genera migracion
+npx prisma studio
+
+npx prisma migrate dev -> products_migration => genera migracion
+
+npm i -D ts-node
+
+crear en prisma/seed.ts
+crear en prisma/data/categories.ts
+crear en prisma/data/products.ts
+
+agregar package.json
+"prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
+
+ejecutar seed
+npx prisma generate
+npx prisma db seed
+
+** Error al ejecutar el seed
+en mi caso el error estaba en el output ya que me tomaba la carpeta app de mi aplicacion y alli me generaba el client, al comentar esa linea como se ve a continuacion, el output se vuelve por defecto y hace todo el trabajo y se soluciona el error.
+
+( linea antes de comentar el output ✔ Generated Prisma Client (v6.6.0) to .\app\generated\prisma in 33ms)
+
+client generado en la carpeta app de tu aplicacion.
+
+(linea despues de comentar el output ✔ Generated Prisma Client (v6.6.0) to .\node_modules\@prisma\client in 28ms)
+
+client generado en node modules carpeta de prisma.
+
+
+//////////////////
+schema.prisma
+/////////////////
+
+//comentar la linea de output
+
+generator client {
+  provider = "prisma-client-js"
+  // output   = "../app/generated/prisma"
+}
+
+volver a ejecutar despues de comentar
+npx prisma generate
+npx prisma db seed
+
+Data Fetching 
+data fetching en Next.js puede hacerse con 4 formas diferente
+  en el servidor con fetch
+  en el servidor con un ORM o cosnultas SQL
+  en el cliente con un Route Handler y un apetiicon GET
+  en el cliente con React Query, Axios, SWR u otras opciones
+
+crear carpeta src/lib/prisma.ts
+
+*** es un cliente que maneja las conexiones de prisma, si detecta una conexion global ya no crea nuevas conexiones
+import { PrismaClient } from '@prisma/client'
+
+const globalForPrisma = global as unknown as { prisma: PrismaClient }
+
+export const prisma =
+  globalForPrisma.prisma ||
+  new PrismaClient({
+    log: ['query'],
+  })
+
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
+
+parmas esta disponible en 
+layout.tsx
+page.tsx
+route.tsx
+generateMetadata
+
+
+zustand
+npm i zustand
+crear sotre.ts en src
+
+npm i @heroicons/react
+
+npx prisma migrate dev -> order products
+
+
+ZOd
+npm i zod
+src/schema/index.ts
+
+Toastify
+npm i react-toastify
+
+agregar quantity al modelo de OrderProducts
+npx prisma migrate dev -> add quantity to orderproducts
+
+Cloudinary
+npm i next-cloudinary
+
+
+npm i react-icons
+
+mostrar imagenes o recursos de otros sitios
+next.config.ts
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com'
+      }
+    ]
+  }
+
+
+npm i swr
