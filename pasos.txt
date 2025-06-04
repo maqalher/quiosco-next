@@ -188,3 +188,10 @@ next.config.ts
 
 
 npm i swr
+
+agreagar a los endpoints para hacerlos dinamicos en pord
+export const dynamic = 'force-dynamic'
+
+npm run build para generar el proyecto
+
+en vercel build Command *overrirde* npx prisma generate && next build
